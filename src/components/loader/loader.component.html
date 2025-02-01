@@ -1,0 +1,19 @@
+<div class="loader">
+    <h1>Json Vizualizer</h1>
+    <p>Upload your file (.json format, max size 5mb) to display the charts.</p>
+    <p-toast />
+    <p-fileupload
+        mode="basic"
+        chooseIcon="pi pi-upload"
+        maxFileSize="5000000"
+        accept=".json"
+        chooseLabel="Load file"
+
+        invalidFileSizeMessageDetail="Maximum upload size file is 5MB"
+        invalidFileTypeMessageSummary="File type JSON format"
+
+        customUpload="true"
+        (uploadHandler)="loadFile($event)"
+        [auto]="true"
+      />
+</div>
