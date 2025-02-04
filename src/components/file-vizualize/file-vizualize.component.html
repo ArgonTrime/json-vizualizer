@@ -1,1 +1,35 @@
-<h2>File Vizualizer</h2>
+<div class="file-vizualize">
+
+  <div class="file-vizualize__header">
+    <h2>File Vizualizer</h2>
+    <div *ngIf="file.length > 0" class="file-vizualize__close" (click)="closeFile()">
+      <span>Close file</span>
+      <i class="pi pi-times" style="color: var(--p-red-700)"></i>
+    </div>
+  </div>
+
+  <div *ngIf="file.length > 0">
+    <p-table [value]="file">
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="category">
+            Category <p-sortIcon field="category" />
+          </th>
+          <th pSortableColumn="value">
+            Value <p-sortIcon field="value" />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-fileItem>
+        <tr>
+          <td>{{ fileItem.category }}</td>
+          <td>{{ fileItem.value }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+</div>
+
+
+
