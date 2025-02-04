@@ -1,2 +1,7 @@
-<!--@for (file of files; track file.nameFile) {-->
-<!--}-->
+<ul *ngIf="files$ | async as files" class="files-list">
+  <li *ngFor="let file of files">
+    <i class="pi pi-file"></i>
+    {{ file.nameFile }} — {{ file.dateLoad  | date: 'short'}}
+  </li>
+</ul>
+

@@ -1,4 +1,4 @@
-import {createActionGroup, props} from '@ngrx/store';
+import {createActionGroup, emptyProps, props} from '@ngrx/store';
 import {IFileItem} from '../../interfaces/interfaces';
 
 export const FilesActions = createActionGroup({
@@ -8,6 +8,6 @@ export const FilesActions = createActionGroup({
       dateLoad: Date,
       file: IFileItem[],
       nameFile: string
-    }>(),
+    }>()
   }
 });
