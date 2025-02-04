@@ -1,6 +1,6 @@
 import {createReducer, on} from '@ngrx/store';
 import {FilesActions} from './files.actions';
-import {IFile, IFileItem, IFiles} from '../../interfaces/interfaces';
+import {IFile} from '../../interfaces/interfaces';
 
 export const initialFilesState: ReadonlyArray<IFile> = [];
 

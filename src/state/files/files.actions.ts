@@ -1,4 +1,4 @@
-import {createActionGroup, emptyProps, props} from '@ngrx/store';
+import {createActionGroup, props} from '@ngrx/store';
 import {IFileItem} from '../../interfaces/interfaces';
 
 export const FilesActions = createActionGroup({
