@@ -1,7 +1,12 @@
-<ul *ngIf="files$ | async as files" class="files-list">
-  <li *ngFor="let file of files">
-    <i class="pi pi-file"></i>
-    {{ file.nameFile }} — {{ file.dateLoad  | date: 'short'}}
-  </li>
-</ul>
+<div class="files-list">
+  <h2>File History</h2>
+  <p>Select a file from the list or upload one to select.</p>
+  <ul *ngIf="files$ | async as files">
+    <li *ngFor="let file of files">
+      <i class="pi pi-file"></i>
+      {{ file.nameFile }} — {{ file.dateLoad  | date: 'short'}}
+    </li>
+  </ul>
+</div>
+
 
