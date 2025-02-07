@@ -5,5 +5,5 @@ export const selectFilesState = createFeatureSelector<IFile[]>('files')
 
 export const selectFiles = createSelector(
   selectFilesState,
-  (state) => state
+  (state) => state.length > 1 ? [...state].reverse() : state
 )

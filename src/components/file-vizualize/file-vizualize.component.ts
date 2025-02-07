@@ -23,7 +23,6 @@ import {BarChartComponent} from '../bar-chart/bar-chart.component';
   providers: []
 })
 export class FileVizualizeComponent implements OnInit{
-  // implements OnInit, OnDestroy
   file$: Observable<IFileItem[]>;
   file!: IFileItem[];
 
@@ -34,12 +33,9 @@ export class FileVizualizeComponent implements OnInit{
   ngOnInit() {
     this.file$.subscribe((file) => {
       this.file = file
-      console.log(this.file)
     })
   }
   closeFile () {
     this.store.dispatch(activeFileActions.closeActiveFile())
   }
-  // ngOnDestroy() {
-  // }
 }

@@ -7,6 +7,6 @@ export const initialFilesState: ReadonlyArray<IFile> = [];
 export const filesReducer = createReducer(
   initialFilesState,
   on(FilesActions.addFile, (state, file: IFile ) => {
-    return [...state, file]
+    return state.length === 5 ? [...state.slice(1), file] : [...state, file]
   })
 )
