@@ -54,8 +54,6 @@ export class PieChartComponent implements OnInit {
         .outerRadius(this.radius)
       )
       .attr('fill', (d: any, i: number) => (this.colors(i)))
-      .attr("stroke", "#121926")
-      .style("stroke-width", "2px")
       .on('mouseover', (event: any, d: any) => this.showTooltip(event, d))
       .on('mouseout', (event: any, d: any) => this.hideTooltip());
 

@@ -7,6 +7,7 @@ import {TableModule} from 'primeng/table';
 import {NgIf} from '@angular/common';
 import {activeFileActions} from '../../state/active-file/active-file.actions';
 import {PieChartComponent} from '../pie-chart/pie-chart.component';
+import {BarChartComponent} from '../bar-chart/bar-chart.component';
 
 @Component({
   selector: 'app-file-vizualize',
@@ -16,7 +17,8 @@ import {PieChartComponent} from '../pie-chart/pie-chart.component';
   imports: [
     TableModule,
     NgIf,
-    PieChartComponent
+    PieChartComponent,
+    BarChartComponent
   ],
   providers: []
 })
