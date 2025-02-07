@@ -6,6 +6,7 @@ import {selectActiveFile} from '../../state/active-file/active-file.selectors';
 import {TableModule} from 'primeng/table';
 import {NgIf} from '@angular/common';
 import {activeFileActions} from '../../state/active-file/active-file.actions';
+import {PieChartComponent} from '../pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-file-vizualize',
@@ -14,7 +15,8 @@ import {activeFileActions} from '../../state/active-file/active-file.actions';
   standalone: true,
   imports: [
     TableModule,
-    NgIf
+    NgIf,
+    PieChartComponent
   ],
   providers: []
 })
@@ -30,6 +32,7 @@ export class FileVizualizeComponent implements OnInit{
   ngOnInit() {
     this.file$.subscribe((file) => {
       this.file = file
+      console.log(this.file)
     })
   }
   closeFile () {

@@ -4,7 +4,7 @@
     <h2>File Vizualizer</h2>
     <div *ngIf="file.length > 0" class="file-vizualize__close" (click)="closeFile()">
       <span>Close file</span>
-      <i class="pi pi-times" style="color: var(--p-red-700)"></i>
+      <i class="pi pi-times"></i>
     </div>
   </div>
 
@@ -29,6 +29,11 @@
     </p-table>
   </div>
 
+  @if (file.length > 0) {
+    <div class="file-vizualize__charts">
+      <app-pie-chart [data]="file"></app-pie-chart>
+    </div>
+  }
 </div>
 
 
