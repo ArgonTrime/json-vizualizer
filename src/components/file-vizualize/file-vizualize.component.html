@@ -9,7 +9,8 @@
   </div>
 
   <div *ngIf="file.length > 0">
-    <p-table [value]="file">
+    <p-table #dt [value]="file" (sortFunction)="customSort($event)" [customSort]="true">
+<!--    <p-table [value]="file">-->
       <ng-template #header>
         <tr>
           <th pSortableColumn="category">
@@ -27,11 +28,12 @@
         </tr>
       </ng-template>
     </p-table>
+<!--    <button pButton type="button" (click)="resetSort()" pButtonLabel="Reset Sort"></button>-->
   </div>
 
   @if (file.length > 0) {
     <div class="file-vizualize__charts">
-      <app-pie-chart [data]="file"></app-pie-chart>
+      <app-pie-chart [data]="file" [sortedData]="sortedFile"></app-pie-chart>
     </div>
 
     <div class="file-vizualize__charts">

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
 import {IFileItem} from '../../interfaces/interfaces';
 
@@ -8,7 +8,7 @@ import {IFileItem} from '../../interfaces/interfaces';
   styleUrl: './bar-chart.component.less'
 })
 
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, OnChanges {
   @Input() data: IFileItem[] = [];
 
   private svg: any;
@@ -23,6 +23,11 @@ export class BarChartComponent implements OnInit {
     this.createTooltip();
     this.createColors();
     this.drawChart();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['data'] && !changes['data'].firstChange) {
+      this.updateChart();
+    }
   }
 
   private createSvg(): void {
@@ -99,5 +104,11 @@ export class BarChartComponent implements OnInit {
 
   private hideTooltip() {
     this.tooltip.style("visibility", "hidden");
+  }
+
+  private updateChart() {
+    this.svg.selectAll('*').remove();
+    this.createColors();
+    this.drawChart();
   }
 }

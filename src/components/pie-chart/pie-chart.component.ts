@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {IFileItem} from '../../interfaces/interfaces';
 import * as d3 from 'd3';
 
@@ -8,8 +8,9 @@ import * as d3 from 'd3';
   styleUrl: './pie-chart.component.less'
 })
 
-export class PieChartComponent implements OnInit {
+export class PieChartComponent implements OnInit, OnChanges {
   @Input() data: IFileItem[] = [];
+  @Input() sortedData: IFileItem[] = [];
 
   private svg: any;
   private margin = 50;
@@ -24,6 +25,16 @@ export class PieChartComponent implements OnInit {
     this.createColors();
     this.createTooltip();
     this.drawChart();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    // if(changes['data'] && !changes['data'].firstChange) {
+    //   this.updateChart();
+    //   console.log('Changed chart')
+    // }
+    if(changes['sortedData'] && !changes['sortedData'].firstChange) {
+      this.updateChart();
+      console.log('Changed chart')
+    }
   }
 
   private createSvg() {
@@ -94,5 +105,11 @@ export class PieChartComponent implements OnInit {
 
   private hideTooltip(): void {
     this.tooltip.style("visibility", "hidden");
+  }
+
+  private updateChart() {
+    this.svg.selectAll('*').remove();
+    this.createColors();
+    this.drawChart();
   }
 }
