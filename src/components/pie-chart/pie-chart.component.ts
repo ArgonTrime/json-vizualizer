@@ -9,7 +9,6 @@ import * as d3 from 'd3';
 })
 
 export class PieChartComponent implements OnInit, OnChanges {
-  @Input() data: IFileItem[] = [];
   @Input() sortedData: IFileItem[] = [];
 
   private svg: any;
@@ -33,7 +32,6 @@ export class PieChartComponent implements OnInit, OnChanges {
     // }
     if(changes['sortedData'] && !changes['sortedData'].firstChange) {
       this.updateChart();
-      console.log('Changed chart')
     }
   }
 
@@ -48,7 +46,7 @@ export class PieChartComponent implements OnInit, OnChanges {
 
   private createColors() {
     this.colors = d3.scaleOrdinal()
-      .domain(this.data.map(d => d.value.toString()))
+      .domain(this.sortedData.map(d => d.value.toString()))
       .range(d3.schemeCategory10);
   }
 
@@ -57,7 +55,7 @@ export class PieChartComponent implements OnInit, OnChanges {
 
     this.svg
       .selectAll('pieces')
-      .data(pie(this.data))
+      .data(pie(this.sortedData))
       .enter()
       .append('path')
       .attr('d', d3.arc()
@@ -74,7 +72,7 @@ export class PieChartComponent implements OnInit, OnChanges {
 
     this.svg
       .selectAll('pieces')
-      .data(pie(this.data))
+      .data(pie(this.sortedData))
       .enter()
       .append('text')
       .text((d:any) => d.data.category)

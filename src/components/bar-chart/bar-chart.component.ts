@@ -9,7 +9,7 @@ import {IFileItem} from '../../interfaces/interfaces';
 })
 
 export class BarChartComponent implements OnInit, OnChanges {
-  @Input() data: IFileItem[] = [];
+  @Input() sortedData: IFileItem[] = [];
 
   private svg: any;
   private margin = { top: 20, right: 30, bottom: 40, left: 40 };
@@ -25,7 +25,7 @@ export class BarChartComponent implements OnInit, OnChanges {
     this.drawChart();
   }
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['data'] && !changes['data'].firstChange) {
+    if(changes['sortedData'] && !changes['sortedData'].firstChange) {
       this.updateChart();
     }
   }
@@ -41,12 +41,12 @@ export class BarChartComponent implements OnInit, OnChanges {
 
   private drawChart(): void {
     const x = d3.scaleBand()
-      .domain(this.data.map(d => d.category))
+      .domain(this.sortedData.map(d => d.category))
       .range([0, this.width])
       .padding(0.1);
 
     const y = d3.scaleLinear()
-      .domain([0, d3.max(this.data, d => d.value) || 0])
+      .domain([0, d3.max(this.sortedData, d => d.value) || 0])
       .nice()
       .range([this.height, 0]);
 
@@ -62,7 +62,7 @@ export class BarChartComponent implements OnInit, OnChanges {
       .call(d3.axisLeft(y));
 
     this.svg.selectAll("rect")
-      .data(this.data)
+      .data(this.sortedData)
       .enter()
       .append("rect")
       .attr("x", (d: any) => x(d.category) || 0)
@@ -78,7 +78,7 @@ export class BarChartComponent implements OnInit, OnChanges {
 
   private createColors(): void {
     this.colors = d3.scaleOrdinal(d3.schemeCategory10)
-      .domain(this.data.map((d, i) => i.toString()));
+      .domain(this.sortedData.map((d, i) => i.toString()));
   }
 
   private createTooltip() {
