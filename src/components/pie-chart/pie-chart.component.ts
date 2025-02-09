@@ -26,10 +26,6 @@ export class PieChartComponent implements OnInit, OnChanges {
     this.drawChart();
   }
   ngOnChanges(changes: SimpleChanges) {
-    // if(changes['data'] && !changes['data'].firstChange) {
-    //   this.updateChart();
-    //   console.log('Changed chart')
-    // }
     if(changes['sortedData'] && !changes['sortedData'].firstChange) {
       this.updateChart();
     }
@@ -60,11 +56,18 @@ export class PieChartComponent implements OnInit, OnChanges {
       .append('path')
       .attr('d', d3.arc()
         .innerRadius(0)
-        .outerRadius(this.radius)
+        .outerRadius(0) // start radius for animation
       )
       .attr('fill', (d: any, i: number) => (this.colors(i)))
       .on('mouseover', (event: any, d: any) => this.showTooltip(event, d))
-      .on('mouseout', (event: any, d: any) => this.hideTooltip());
+      .on('mouseout', (event: any, d: any) => this.hideTooltip())
+      // animation chart
+      .transition()
+      .duration(1000) // animation timer ms
+      .attr('d', d3.arc()
+        .innerRadius(0)
+        .outerRadius(this.radius)
+      );
 
     const labelLocation = d3.arc()
       .innerRadius(100)
@@ -78,7 +81,12 @@ export class PieChartComponent implements OnInit, OnChanges {
       .text((d:any) => d.data.category)
       .attr("transform", (d:any) => `translate(${labelLocation.centroid(d)})`)
       .style("text-anchor", "middle")
-      .style("font-size", 14);
+      .style("font-size", 14)
+      // animation text
+      .style('opacity', 0)
+      .transition()
+      .duration(1000)
+      .style('opacity', 1);
   }
 
   private createTooltip() {

@@ -57,7 +57,7 @@ export class BarChartComponent implements OnInit, OnChanges {
       .style("text-anchor", "end")
       .attr("dx", "0.3em")
       .attr("dy", "0.8em")
-      // .attr("transform", "rotate(-45)");
+
     this.svg.append("g")
       .call(d3.axisLeft(y));
 
@@ -66,14 +66,18 @@ export class BarChartComponent implements OnInit, OnChanges {
       .enter()
       .append("rect")
       .attr("x", (d: any) => x(d.category) || 0)
-      .attr("y", (d: any) => y(d.value))
+      //.attr("y", (d: any) => y(d.value))
+      .attr("y", this.height) // start position for animation
       .attr("width", x.bandwidth())
-      .attr("height", (d: any) => this.height - y(d.value))
+      // .attr("height", (d: any) => this.height - y(d.value))
+      .attr("height", 0) // start height
       .attr("fill", (d: any, i: number) => this.colors(i))
       .on("mouseover", (event: any, d: any) => this.showTooltip(event, d))
-      .on("mouseout", () => this.hideTooltip());
-
-
+      .on("mouseout", () => this.hideTooltip())
+      .transition()
+      .duration(1000)
+      .attr("y", (d: any) => y(d.value))
+      .attr("height", (d: any) => this.height - y(d.value));
   }
 
   private createColors(): void {
