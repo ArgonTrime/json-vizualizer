@@ -27,6 +27,19 @@
         </tr>
       </ng-template>
     </p-table>
+    <div *ngIf="isSorted == null" class="file-vizualize__controlsTable">
+      @if (!isFilter) {
+        <div class="file-vizualize__controlsTable_control">
+          <span>Hide minimum value</span>
+          <i class="pi pi-filter red" (click)="filterMinimalValue()"></i>
+        </div>
+      } @else {
+        <div class="file-vizualize__controlsTable_control">
+          <span>Remove filter</span>
+          <i class="pi pi-filter-slash green" (click)="resetFilterMinimalValue()"></i>
+        </div>
+      }
+    </div>
   </div>
 
   @if (file.length > 0) {

@@ -31,6 +31,7 @@ export class FileVizualizeComponent implements OnInit {
   originalFile!: IFileItem[];
   sortedFile: IFileItem[] = [];
   isSorted: boolean | null = null;
+  isFilter: boolean = false;
 
   constructor(private store: Store) {
     this.file$ = this.store.select(selectActiveFile)
@@ -45,22 +46,22 @@ export class FileVizualizeComponent implements OnInit {
   }
   closeFile () {
     this.store.dispatch(activeFileActions.closeActiveFile())
+    this.isSorted = null;
+    this.isFilter = false;
   }
   customSort(event: SortEvent) {
     if (this.isSorted == null || this.isSorted === undefined) {
       this.isSorted = true;
       this.sortTableData(event);
       this.sortedFile = [...event.data!];
-      console.log(this.sortedFile);
     } else if (this.isSorted == true) {
       this.isSorted = false;
       this.sortTableData(event);
       this.sortedFile = [...event.data!];
-      console.log(this.sortedFile);
     } else if (this.isSorted == false) {
       this.isSorted = null;
-      this.file = [...this.originalFile];
-      this.sortedFile = [...this.originalFile];
+      this.isFilter ? this.file = [...this.file] : this.file = [...this.originalFile];
+      this.isFilter ? this.sortedFile = [...this.sortedFile] : this.sortedFile = [...this.originalFile];
       this.dt.reset();
     }
   }
@@ -81,5 +82,22 @@ export class FileVizualizeComponent implements OnInit {
 
       return order * result;
     });
+  }
+  filterMinimalValue() {
+    const minValue = Math.min(
+      ...[...this.file].reduce((values: number[], { value }) => {
+        values.push(value);
+        return values;
+      }, [])
+    );
+    const filtredFile = [...this.file].filter(({value}) => value != minValue);
+    this.sortedFile = filtredFile;
+    this.file = filtredFile;
+    this.isFilter = true;
+  }
+  resetFilterMinimalValue() {
+    this.sortedFile = [...this.originalFile];
+    this.file = [...this.originalFile];
+    this.isFilter = false;
   }
 }
