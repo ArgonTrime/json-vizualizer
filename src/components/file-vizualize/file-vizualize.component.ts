@@ -28,7 +28,7 @@ export class FileVizualizeComponent implements OnInit {
 
   file$: Observable<IFileItem[]>;
   file!: IFileItem[];
-  originalFile!: IFileItem[];
+  originalFile: IFileItem[] = [];
   sortedFile: IFileItem[] = [];
   isSorted: boolean | null = null;
   isFilter: boolean = false;

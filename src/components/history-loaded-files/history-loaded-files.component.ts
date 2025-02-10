@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {selectFiles} from '../../state/files/files.selectors';
 import {Observable} from 'rxjs';
 import {IFile, IFileItem} from '../../interfaces/interfaces';
-import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
+import { DatePipe, NgForOf, NgIf } from '@angular/common';
 import {activeFileActions} from '../../state/active-file/active-file.actions';
 import {selectActiveFile} from '../../state/active-file/active-file.selectors';
 
