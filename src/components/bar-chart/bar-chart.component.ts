@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
 import {IFileItem} from '../../interfaces/interfaces';
 
@@ -8,8 +8,8 @@ import {IFileItem} from '../../interfaces/interfaces';
   styleUrl: './bar-chart.component.less'
 })
 
-export class BarChartComponent implements OnInit {
-  @Input() data: IFileItem[] = [];
+export class BarChartComponent implements OnInit, OnChanges {
+  @Input() sortedData: IFileItem[] = [];
 
   private svg: any;
   private margin = { top: 20, right: 30, bottom: 40, left: 40 };
@@ -24,6 +24,11 @@ export class BarChartComponent implements OnInit {
     this.createColors();
     this.drawChart();
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['sortedData'] && !changes['sortedData'].firstChange) {
+      this.updateChart();
+    }
+  }
 
   private createSvg(): void {
     this.svg = d3.select("figure#bar")
@@ -36,12 +41,12 @@ export class BarChartComponent implements OnInit {
 
   private drawChart(): void {
     const x = d3.scaleBand()
-      .domain(this.data.map(d => d.category))
+      .domain(this.sortedData.map(d => d.category))
       .range([0, this.width])
       .padding(0.1);
 
     const y = d3.scaleLinear()
-      .domain([0, d3.max(this.data, d => d.value) || 0])
+      .domain([0, d3.max(this.sortedData, d => d.value) || 0])
       .nice()
       .range([this.height, 0]);
 
@@ -52,28 +57,32 @@ export class BarChartComponent implements OnInit {
       .style("text-anchor", "end")
       .attr("dx", "0.3em")
       .attr("dy", "0.8em")
-      // .attr("transform", "rotate(-45)");
+
     this.svg.append("g")
       .call(d3.axisLeft(y));
 
     this.svg.selectAll("rect")
-      .data(this.data)
+      .data(this.sortedData)
       .enter()
       .append("rect")
       .attr("x", (d: any) => x(d.category) || 0)
-      .attr("y", (d: any) => y(d.value))
+      //.attr("y", (d: any) => y(d.value))
+      .attr("y", this.height) // start position for animation
       .attr("width", x.bandwidth())
-      .attr("height", (d: any) => this.height - y(d.value))
+      // .attr("height", (d: any) => this.height - y(d.value))
+      .attr("height", 0) // start height
       .attr("fill", (d: any, i: number) => this.colors(i))
       .on("mouseover", (event: any, d: any) => this.showTooltip(event, d))
-      .on("mouseout", () => this.hideTooltip());
-
-
+      .on("mouseout", () => this.hideTooltip())
+      .transition()
+      .duration(1000)
+      .attr("y", (d: any) => y(d.value))
+      .attr("height", (d: any) => this.height - y(d.value));
   }
 
   private createColors(): void {
     this.colors = d3.scaleOrdinal(d3.schemeCategory10)
-      .domain(this.data.map((d, i) => i.toString()));
+      .domain(this.sortedData.map((d, i) => i.toString()));
   }
 
   private createTooltip() {
@@ -99,5 +108,11 @@ export class BarChartComponent implements OnInit {
 
   private hideTooltip() {
     this.tooltip.style("visibility", "hidden");
+  }
+
+  private updateChart() {
+    this.svg.selectAll('*').remove();
+    this.createColors();
+    this.drawChart();
   }
 }

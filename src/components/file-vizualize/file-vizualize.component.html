@@ -9,7 +9,7 @@
   </div>
 
   <div *ngIf="file.length > 0">
-    <p-table [value]="file">
+    <p-table #dt [value]="file" (sortFunction)="customSort($event)" [customSort]="true">
       <ng-template #header>
         <tr>
           <th pSortableColumn="category">
@@ -27,18 +27,28 @@
         </tr>
       </ng-template>
     </p-table>
+    <div *ngIf="isSorted == null" class="file-vizualize__controlsTable">
+      @if (!isFilter) {
+        <div class="file-vizualize__controlsTable_control">
+          <span>Hide minimum value</span>
+          <i class="pi pi-filter red" (click)="filterMinimalValue()"></i>
+        </div>
+      } @else {
+        <div class="file-vizualize__controlsTable_control">
+          <span>Remove filter</span>
+          <i class="pi pi-filter-slash green" (click)="resetFilterMinimalValue()"></i>
+        </div>
+      }
+    </div>
   </div>
 
   @if (file.length > 0) {
     <div class="file-vizualize__charts">
-      <app-pie-chart [data]="file"></app-pie-chart>
+      <app-pie-chart [sortedData]="sortedFile"></app-pie-chart>
     </div>
 
     <div class="file-vizualize__charts">
-      <app-bar-chart [data]="file"></app-bar-chart>
+      <app-bar-chart [sortedData]="sortedFile"></app-bar-chart>
     </div>
   }
 </div>
-
-
-
